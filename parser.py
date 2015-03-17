@@ -7,7 +7,8 @@ from unicodedata import normalize
 
 lista=[""]
 url = urllib.urlopen("http://www.uefs.br") 
-
+meta = url.info()
+print "Content-Length:", meta.getheaders("Content-Length")[0]
 #print html_completo
 html = BeautifulSoup(url)
 print "titulo: "
@@ -29,7 +30,7 @@ def remover_acentos(txt, codif='utf-8'):
        acentuados pelos seus equivalentes não acentuados.  '''
     return normalize('NFKD', txt.decode(codif)).encode('ASCII','ignore')
 
-for i in lista_palavras:
+for i in lista_palavras: # adiciona as palavras sem acento dentro de uma nova lista
 	lista.append(remover_acentos(i))
 print lista
 
