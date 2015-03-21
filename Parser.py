@@ -10,7 +10,7 @@ html = urllib.urlopen(url).read() # Lendo a url e passando o html
 soup = BeautifulSoup(html)
 
 #print meta.info()
-print soup.find_all('a')
+#print soup.find_all('a')
 
 def getTamanho():
 	meta = url.info()
@@ -72,11 +72,34 @@ def remover_acentos(txt, codif='utf-8'):
 
 
 
+lista=[]
+palavra = ""
+l = [te.encode('UTF8') for te in text] # Transformando o texto um uma lista de unicode utf8
+
+#print text
+for t in l:  #transformando em uma lista de string
+				
+		x = str(t)
+
+		lista.append(t)
 
 
+print type (lista[23])	
 
+lista2=[]
+palavra=""
 
+for v in range(1,len(lista)): # CRIANDO FUCK LISTA DE PAALVRAS
+	z= lista[v]
 
+	if z.isspace():
+		lista2.append(palavra)
+		palavra=""
 
+	else:
+		#print z
+		palavra+=z
+
+print lista2
 
 
