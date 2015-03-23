@@ -3,29 +3,13 @@
 import urllib
 from bs4 import BeautifulSoup
 from unicodedata import normalize
-url = "http://www.uefs.br/portal"
 
+
+url = "http://www.uefs.br/portal"
+url = str (raw_input("digite o site : ex: http://www.facebook.com"))
 meta =urllib.urlopen(url) 
 html = urllib.urlopen(url).read() # Lendo a url e passando o html
 soup = BeautifulSoup(html)
-
-#print meta.info()
-#print soup.find_all('a')
-
-def getTamanho():
-	meta = url.info()
-	print "Content-Length:", meta.getheaders("Content-Length")[0] # retornando tamanho
-
-titulo = soup.title.text 
-#print titulo
-
-
-def getTitle():
-	titulo = soup.title.text 
-	titulo = titulo.lower() # Colocando em minusculo
-	print titulo
-	return titulo
-
 
 for script in soup(["script", "style"]):
 	script.extract()    # Tirando os scripts do html
@@ -48,7 +32,26 @@ esta no meio dessas.
   '''
 #print text
 text.encode('utf-8')
-print type(text)
+
+#metodo retorna informaçoes adicionais sobre o site
+def Informacoes(meta):  
+	print meta.info()
+#print soup.find_all('a')
+
+def getTamanho():
+	meta = url.info()
+	print "Content-Length:", meta.getheaders("Content-Length")[0] # retornando tamanho
+
+titulo = soup.title.text 
+#print titulo
+
+
+def getTitle():
+	titulo = soup.title.text 
+	titulo = titulo.lower() # Colocando em minusculo
+	print titulo
+	return titulo
+
 
 # funcao que remove os acentos de palavras
 def remover_acentos(txt, codif='utf-8'):
@@ -103,19 +106,28 @@ def contas_Palavras(lista2): #conta as palavras distintas
 #List_Palavras(text) como chamar uma funcao
 #getTitle()
 def centroide(soup,text):
+	'''tags = open ('pesos.txt', 'r')
+		for x in tagsWeight:
+		for y in tagsList:
+			tagsList = tags.split()
+		tagsList.append(tags.readline())'''
+
 	l = List_Palavras(text)
 	tagList=["h1","h2","h3","h4","h5","h6","a","title","small","sub","b","big","em","i","u","strong","strike","center","sup","font","address","meta"]
 	dic =[]
+	pesos =[7,6,7,4,4,4,5,10,2,2,3,3,3,3,3,3,3,3,2,2,2,2]
+	
 	pontos=0
 	for palavra in l:
+		i=0
 		for tag in tagList:
 			z = soup.find_all(tag)
 			t = str(z)
 			g = t.split(palavra)
-			if len(g)!=0:
-				pontos += len(g) - 1
+			vezs = len(g) -1
+			pontos += pesos[i]*(len(g) - 1)
+			i+=1
 		dic.append(palavra)
-		
 		dic.append(pontos)
 		#dic.update(Palavra=palavra,Vezes=pontos)
 		pontos=0
