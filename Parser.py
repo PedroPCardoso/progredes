@@ -90,7 +90,7 @@ def List_Palavras(text):
 	return lista2
 # print lista2 caso queira printa a lista de todas as palavras
 
-def contas_Palavras(lista2):
+def contas_Palavras(lista2): #conta as palavras distintas
 	lista3=[]
 	quant=0 # Funcao contar as palavras
 	for v in range(1,len(lista2)):
@@ -101,15 +101,36 @@ def contas_Palavras(lista2):
 	print quant
 
 #List_Palavras(text) como chamar uma funcao
-getTitle()
+#getTitle()
+def centroide(soup,text):
+	l = List_Palavras(text)
+	tagList=["h1","h2","h3","h4","h5","h6","a","title","small","sub","b","big","em","i","u","strong","strike","center","sup","font","address","meta"]
+	dic =[]
+	pontos=0
+	for palavra in l:
+		for tag in tagList:
+			z = soup.find_all(tag)
+			t = str(z)
+			g = t.split(palavra)
+			if len(g)!=0:
+				pontos += len(g) - 1
+		dic.append(palavra)
+		
+		dic.append(pontos)
+		#dic.update(Palavra=palavra,Vezes=pontos)
+		pontos=0
+	print dic
+	#print dic.items()
+
+centroide(soup,text)
 
 # Ta meio sem logica, so to fazendo por enquanto, mas tem que ajeitar esse codigo, 2 funcoes pra fazer uma coisa so :P
 #Funcao que printa todas as palavras sem o acento
-def sema_cento(): 
+def sema_cento() : 
 	lista2 = List_Palavras(text)
 	lista_semacent=[]
 	for i in lista2: # asdiciona as palavras sem acento dentro de uma nova lista
 		lista_semacent.append(remover_acentos(i))
 	print lista_semacent
 
-sema_cento()
+#sema_cento()
