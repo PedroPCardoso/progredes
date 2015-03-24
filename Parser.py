@@ -28,19 +28,19 @@ text = '\n'.join(chunk for chunk in chunks if chunk) # pular linha
 ''' Fazer uma funcao usando o BeautifulSoup como eu posso pedir 
 pra ele retornar uma parte do codigo html que tem determinada tag
 e apartir do retorno dessa lista a gente faz um for que sai comparando se a nossa palavra 
-esta no meio dessas.
-  '''
+esta no meio dessas.'''
 #print text
 text.encode('utf-8')
 
 #metodo retorna informaçoes adicionais sobre o site
-def Informacoes(meta):  
+def informacoes(): 
 	print meta.info()
 #print soup.find_all('a')
 
+
 def getTamanho():
-	meta = url.info()
-	print "Content-Length:", meta.getheaders("Content-Length")[0] # retornando tamanho
+	meta2 = meta.info()
+	print "###### Tamanho da Pagina em Bytes:########", meta2.getheaders("Content-Length")[0] # retornando tamanho
 
 titulo = soup.title.text 
 #print titulo
@@ -52,14 +52,16 @@ def getTitle():
 	print titulo
 	return titulo
 
-
+print "################ Titulo e Informaçoes: ###########################"
+informacoes()
+getTamanho()
+getTitle()
 # funcao que remove os acentos de palavras
 def remover_acentos(txt, codif='utf-8'):
     txt = txt.lower() #colocando em minusculo
     ''' Devolve copia de uma str substituindo os caracteres
        acentuados pelos seus equivalentes não acentuados.  '''
     return normalize('NFKD', txt.decode(codif)).encode('ASCII','ignore')
-
 
 
 
@@ -80,7 +82,7 @@ def List_Palavras(text):
 	lista2=[]
 	palavra=""
 
-	for v in range(1,len(lista)): # CRIANDO FUCK LISTA DE PAALAVRAS
+	for v in range(0,len(lista)): # CRIANDO FUCK LISTA DE PAALAVRAS
 		z= lista[v]
 
 		if z.isspace():
@@ -98,46 +100,64 @@ def contas_Palavras(lista2): #conta as palavras distintas
 	quant=0 # Funcao contar as palavras
 	for v in range(1,len(lista2)):
 		for t in range(2,len(lista2)):
-			if lista[v] == lista[t]:
+			if lista2[v] == lista2[t]:
 				quant += 1
 
 	print quant
-
+print"############################ Quantidade de Palavras distintas contidas no html ########################################"
+lista2 =List_Palavras(text)
+contas_Palavras(lista2)
 #List_Palavras(text) como chamar uma funcao
 #getTitle()
-def centroide(soup,text):
-	'''tags = open ('pesos.txt', 'r')
-		for x in tagsWeight:
-		for y in tagsList:
-			tagsList = tags.split()
-		tagsList.append(tags.readline())'''
-
-	l = List_Palavras(text)
-	tagList=["h1","h2","h3","h4","h5","h6","a","title","small","sub","b","big","em","i","u","strong","strike","center","sup","font","address","meta"]
-	dic =[]
-	pesos =[7,6,7,4,4,4,5,10,2,2,3,3,3,3,3,3,3,3,2,2,2,2]
 	
+def getCentroide(soup,text):
+	tagList =[]
+	pesos =[]
+	tags = open ('pesos.txt', 'r')
+	for x in range(1,21):
+		p = tags.readline()
+		z= p.split()
+		pesos.append(int(z[1]))
+		tagList.append(z[0])
+	l = List_Palavras(text)
+	#tagList=["h1","h2","h3","h4","h5","h6","a","title","small","sub","b","big","em","i","u","strong","strike","center","sup","font","address","meta"]
+	dic =[]
+	#pesos =[7,6,7,4,4,4,5,10,2,2,3,3,3,3,3,3,3,3,2,2,2,2]
+	vezs=0
 	pontos=0
+
+
+
+	stop = open ('stoplist.txt', 'r')
+	for i in l:
+		for x in stop.readline():
+			if i == x:
+				l.remove(i)
+
+#	for z in l:
+#		for x in 
+
 	for palavra in l:
 		i=0
 		for tag in tagList:
 			z = soup.find_all(tag)
 			t = str(z)
 			g = t.split(palavra)
-			vezs = len(g) -1
+			vezs += (len(g) -1 )
 			pontos += pesos[i]*(len(g) - 1)
 			i+=1
 		dic.append(palavra)
 		dic.append(pontos)
-		#dic.update(Palavra=palavra,Vezes=pontos)
+		dic.append(vezs)
 		pontos=0
+		vezs =0
 	print dic
 	#print dic.items()
+print "################################# CENTROIDE (Palavra,Pontos e Vezes que aparece)################################"
+getCentroide(soup,text)
 
-centroide(soup,text)
-
-# Ta meio sem logica, so to fazendo por enquanto, mas tem que ajeitar esse codigo, 2 funcoes pra fazer uma coisa so :P
 #Funcao que printa todas as palavras sem o acento
+
 def sema_cento() : 
 	lista2 = List_Palavras(text)
 	lista_semacent=[]
@@ -145,4 +165,5 @@ def sema_cento() :
 		lista_semacent.append(remover_acentos(i))
 	print lista_semacent
 
-#sema_cento()
+print"############################# PALAVRAS SEM ACENTOS ###################################################"
+sema_cento()
