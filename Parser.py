@@ -133,6 +133,12 @@ def getCentroide(soup,text):
 		for x in stop.readline():
 			if i == x:
 				l.remove(i)
+				
+	stop2 = open ('stoplistEN.txt', 'r')
+	for i in l:
+		for x in stop.readline():
+			if i == x:
+				l.remove(i)
 
 #	for z in l:
 #		for x in 
