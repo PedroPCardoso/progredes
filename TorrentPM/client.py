@@ -1,4 +1,5 @@
 import socket
+import base64
 
 class client:
     HOST = '10.65.102.96'     # Endereco IP do Servidor
@@ -20,6 +21,6 @@ class client:
         tcp.close()
 
     def encode(xml):
-
+        file_encoded = base64.b64encode(xml) # ver como vai ser com arquivo
 
     def 

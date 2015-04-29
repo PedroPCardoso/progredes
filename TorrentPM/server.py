@@ -36,4 +36,6 @@ class server:
         conection.close()
         thread.exit()
 
+    def dataDecode(xmlEncoded):
+        file_decoded = base64.b64decode(xmlEncoded)
 
