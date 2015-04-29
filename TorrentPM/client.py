@@ -1,15 +1,25 @@
 import socket
 
-TCP_IP = '127.0.0.1'
-TCP_PORT = 5005
+class client:
+    HOST = '10.65.102.96'     # Endereco IP do Servidor
+    PORT = 4000            # Porta que o Servidor esta
+    BUFFER_SIZE = 1024
+    
+    def _init_(self):
+        conection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        destination = (HOST, PORT)
+        conection.connect(destination)
+        print 'Conexão Aberta!\n'
 
-BUFFER_SIZE = 1024
-MESSAGE = "Hello, World!"
-   
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect((TCP_IP, TCP_PORT))
-  
-s.send(MESSAGE)
-data = s.recv(BUFFER_SIZE)
-s.close()
-print "received data:", data
+    def sendMessage(xmlEncode):
+        conection.send(xmlEncode)
+        print 'Mensagem Enviada!'
+        print xmlEncode
+
+    def closeConection():
+        tcp.close()
+
+    def encode(xml):
+
+
+    def 
