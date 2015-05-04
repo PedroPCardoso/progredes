@@ -1,12 +1,18 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import socket
 import base64
 
 class client:
-    HOST = '10.65.102.96'     # Endereco IP do Servidor
-    PORT = 4000            # Porta que o Servidor esta
+    HOST = ''     # Endereco IP do Servidor
+    PORT = 40030           # Porta que o Servidor esta
     BUFFER_SIZE = 1024
     
-    def _init_(self):
+    def __init__(self):
+        HOST = ''     # Endereco IP do Servidor
+        PORT = 40030            # Porta que o Servidor esta
+        BUFFER_SIZE = 1024
         conection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         destination = (HOST, PORT)
         conection.connect(destination)
@@ -23,4 +29,6 @@ class client:
     def encode(xml):
         file_encoded = base64.b64encode(xml) # ver como vai ser com arquivo
 
-    def 
+
+
+c=client()
