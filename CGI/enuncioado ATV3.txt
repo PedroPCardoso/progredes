@@ -1,0 +1,10 @@
+Atividade prática: Todos já devem ter utilizado alguma página 
+na Web onde é possível inserir um comentário sobre algum tópico. 
+A atividade prática consiste em desenvolver uma página HTML sobre 
+algum tópico de interesse (blog), permitindo ao  visitante 
+inserir algum comentário. O comentário deve ser composto pelo nome 
+da pessoa que está enviando, a data e hora do envio (deve 
+pegar do servidor) e texto (mensagem). Utilize apenas HTML e CGI. 
+Todos os comentários devem ficar armazenados no servidor e 
+serem exibidos na página. Enviar CGI e HTML  para o professor 
+até terça-feira 12/05.
