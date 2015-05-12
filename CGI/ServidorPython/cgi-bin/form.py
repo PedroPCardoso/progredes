@@ -6,7 +6,12 @@ from datetime import datetime
 form = cgi.FieldStorage()
 
 def savingComents
-	
+	arquivo = open('coments.txt', 'r')
+	texto = arquivo.readlines()
+	texto.append('Nova linha') 
+	arquivo = open('musica.txt', 'w')
+	arquivo.writelines(texto)
+	arquivo.close()
 
 def takeDate
 	today = datetime.now()
