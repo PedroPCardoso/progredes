@@ -13,21 +13,15 @@ savingComents(nome,comentario,data)
 htmlOut()
 
 
-'''def takeDate()
-	today = datetime.now()
-	day = today.day
-	month = today.month
-	year = today.year'''
-
 def htmlOut():
 	arquivo = open('coments.txt', 'r') #abrindo o arquivo pra leitura
-	allComents = arquivo.readlines()
+	allComents = arquivo.readlines() # lê todas as linhas do arquivo e coloca em uma lista e cada linha é uma posição da lista
 
 	print "Content-type: text/html; charset=utf-8"
 	print
 	print "<html><head><title>Comentários</title></head><body>"
 	# for x in xrange(1,10):
-	print allComents + "<br>"
+	print allComents + "<br>" # tem que ler todas as linhas 
 	print "</body></html>"
 
 def savingComents(nome, comentario, data):
@@ -36,7 +30,7 @@ def savingComents(nome, comentario, data):
 	texto.append('Nome:' + nome)  #adiciona o nome do novo coment
 	texto.append('Data:' + data)  #adiciona a data do novo coment
 	texto.append('Comentário:' + comentario)  #adiciona o coment do novo coment
-	texto.append('\n')
+	texto.append('\n') # pra detereminar o fim de um coment
 	arquivo = open('coments.txt', 'w') # abre o arquivo pra escrita e adiciona a list com o novo coment
 	arquivo.writelines(texto) 
 	arquivo.close()
