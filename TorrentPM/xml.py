@@ -2,6 +2,62 @@
 # coding:utf-8
 import xml.etree.ElementTree as ET #sql = ET
 
+def getHosts():
+	root = ET.Element('p2pse')
+	gethosts = ET.SubElement(root,'getHosts')
+	arq = ET.ElementTree(root)
+	ET.dump(root)
+	arq.write('getHosts.xml')
+
+def getHostsResponse():
+	root = ET.Element('p2pse')
+	gethostsresponse = ET.SubElement(root,'getHostsResponse')
+	host = ET.SubElement(gethostsResponse,'host')
+	ip2 = ET.SubElement(host,'ip')
+	port2 = ET.Element(host,'port')
+
+	arq - ET.ElementTree(root)
+	ET.dump(root)
+	arq.write('getHostsResponse.xml')
+
+def searchFiles():
+	root = ET.Element('p2pse')
+	searchfiles = ET.SubElement(root,'searchFiles')
+	keywords = ET.SubElement(root,'keywords')
+	arq = ET.ElementTree(root)
+	ET.dump(root)
+	arq.write('searchFiles.xml')
+
+def searchFilesResponse():
+	root = ET.Element('p2pse')
+	searchfileresponse = ET.SubElement(root,'searchFilesResponse')
+	file2 = ET.SubElement(gethostsResponse,file1)
+	 = ET.SubElement(host,ip)
+	port = ET.Element(host,port)
+
+	arq = ET.ElementTree(root)
+	ET.dump(root)
+	arq.write('getHostsResponse.xml')
+
+def getFiles():
+	root = ET.Element('p2pse')
+	gethosts = ET.SubElement(root,'getFiles')
+	arq = ET.ElementTree(root)
+	ET.dump(root)
+	arq.write('getFiles.xml')
+
+def getFilesResponse():
+	root = ET.Element('p2pse')
+	gethostsResponse = ET.SubElement(root,'getFilesResponse')
+	host = ET.SubElement(gethostsResponse,'host')
+	ip = ET.SubElement(host,ip)
+	port = ET.Element(host,port)
+
+	arq = ET.ElementTree(root)
+	ET.dump(root)
+	arq.write('getHostsResponse.xml')
+
+'''
 #escrita
 root = ET.Element('pycursos') #no pai
 gtk = ET.SubElement(root, 'pyGTK') #n filho 
@@ -26,3 +82,4 @@ for i in root:
 	
 for i in root.iter('cidade'):
 	print i.tag, i.attrib['nome']
+'''
