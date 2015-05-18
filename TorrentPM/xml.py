@@ -5,53 +5,73 @@ import xml.etree.ElementTree as ET #sql = ET
 def getHosts():
 	root = ET.Element('p2pse')
 	gethosts = ET.SubElement(root,'getHosts')
+
 	arq = ET.ElementTree(root)
 	ET.dump(root)
 	arq.write('getHosts.xml')
 
-def getHostsResponse():
+def getHostsResponse(ip,port):
 	root = ET.Element('p2pse')
 	gethostsresponse = ET.SubElement(root,'getHostsResponse')
 	host = ET.SubElement(gethostsResponse,'host')
 	ip2 = ET.SubElement(host,'ip')
-	port2 = ET.Element(host,'port')
+	port2 = ET.SubElement(host,'port')
 
-	arq - ET.ElementTree(root)
+	#fazer um for aqui  !!!!!!!!!PENSAR!!!!!!!!!!
+	ip2.text = ip
+	port2 = port
+
+	arq = ET.ElementTree(root)
 	ET.dump(root)
 	arq.write('getHostsResponse.xml')
 
-def searchFiles():
+def searchFiles(keywords):
 	root = ET.Element('p2pse')
 	searchfiles = ET.SubElement(root,'searchFiles')
-	keywords = ET.SubElement(root,'keywords')
+	keywords2 = ET.SubElement(root,'keywords')
+
+	keywords2.text = keywords
+
 	arq = ET.ElementTree(root)
 	ET.dump(root)
 	arq.write('searchFiles.xml')
 
-def searchFilesResponse():
+def searchFilesResponse(file, fileName, fileSize):
 	root = ET.Element('p2pse')
 	searchfileresponse = ET.SubElement(root,'searchFilesResponse')
-	file2 = ET.SubElement(gethostsResponse,file1)
-	 = ET.SubElement(host,ip)
-	port = ET.Element(host,port)
+	file2 = ET.SubElement(gethostsResponse,'file')
+	fileName2 = ET.SubElement(file2,'fileName')
+	fileSize2 = ET.SubElement(file2,'fileSize')
+
+	file2.text = file
+	fileName2.text = fileName
+	fileSize2.text = fileSize
 
 	arq = ET.ElementTree(root)
 	ET.dump(root)
 	arq.write('getHostsResponse.xml')
 
-def getFiles():
+def getFiles(fileName):
 	root = ET.Element('p2pse')
-	gethosts = ET.SubElement(root,'getFiles')
+	getFiles = ET.SubElement(root,'getFiles')
+	fileName2 = ET.SubElement(getFiles, 'fileName')
+
+	fileName2.text = fileName
+
 	arq = ET.ElementTree(root)
 	ET.dump(root)
 	arq.write('getFiles.xml')
 
-def getFilesResponse():
+def getFilesResponse(fileData, fileName, data):
 	root = ET.Element('p2pse')
-	gethostsResponse = ET.SubElement(root,'getFilesResponse')
-	host = ET.SubElement(gethostsResponse,'host')
-	ip = ET.SubElement(host,ip)
-	port = ET.Element(host,port)
+	getFilesResponse = ET.SubElement(root,'getFilesResponse')
+	fileData2 = ET.SubElement(getFilesResponse,'fileData')
+	fileName2 = ET.SubElement(fileData2,'fileName')
+	data2 = ET.Element(fileData2,'data')
+
+	fileData2.text = fileData
+	fileName2.text = fileName
+	data2.text = data
 
 	arq = ET.ElementTree(root)
 	ET.dump(root)
