@@ -77,9 +77,6 @@ serv = Server()
 
 
 
-
-
-
    
 ''' def recevingMessage(xmlDecode):
         data = con.recv(BUFFER_SIZE)

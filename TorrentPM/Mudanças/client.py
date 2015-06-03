@@ -6,7 +6,7 @@ import base64
 
 class client:
     HOST = ''     # Endereco IP do Servidor
-    PORT = 50007             # Porta que o Servidor esta
+    PORT = 40030           # Porta que o Servidor esta
     BUFFER_SIZE = 1024
     
     def __init__(self):
@@ -16,7 +16,7 @@ class client:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((HOST, PORT))
         s.send('Hello, world')
-        
+
     def sendMessage(xmlEncode):
         conection.send(xmlEncode)
         print 'Mensagem Enviada!'
