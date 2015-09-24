@@ -1,3 +1,0 @@
-http://code.activestate.com/recipes/220472-validating-xml-with-external-dtds-using-xmlproc/
-
-

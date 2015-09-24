@@ -1,5 +1,0 @@
-<!ELEMENT hosts (host*)>
-     <!ELEMENT host (ip?,port?)>
-        <!ELEMENT ip (#PCDATA)> 
-        <!ELEMENT port (#PCDATA)> 
-
