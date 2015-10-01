@@ -9,24 +9,28 @@ import xml.etree.ElementTree as ET #sql = ET
 import os
 import glob
 import base64
+from threading import Thread
 
 class Controller():
 
     def __init__(self):
         print "Menu\n"
-        print "[1] Listar hosts locais"
+        print "[1] Listar hosts locais "
         print "[2] Listar hosts remotos"
         print "[3] Procurar arquivos localmente"
         print "[4] Procurar arquivos remotos"
+
+        def inicializar(local,porta):
+            print "servidor inicializado"
+            s=Servidor(local,porta)
+
+
+        th=Thread( target=inicializar, args = ( "localhost",57001, ) )
+        th.start()
+
         escolha=raw_input()
         if "1" == escolha:
             self.listHosts()
-            s=Servidor("localhost",57001)
-
-            #t = threading.Thread(target=self.servidor(), args=())
-            #t.start()
-
-            #nome =raw_input("Diga o nome do arquivo")
             #c = Cliente()
             #for e in s.lista_clientes:
             #c.enviar(nome)
@@ -38,9 +42,11 @@ class Controller():
              print XMLRECEBIDO
             # string_xml(XMLRECEBIDO,3)
 
+
+
         if "3" == escolha:
 
-            opcao = raw_input("Deseja procurar por: (1) Nome do arquivo ou (2) Formato do arquivo")
+            opcao = raw_input("Deseja procurar por: (1) Nome do arquivo seguido do seu formato")
             if opcao == "1":
                 print "Digite o nome do arquivo junto com o formato do arquivo:"
             if opcao == "2":

@@ -15,10 +15,8 @@ class Servidor:
 
                 lista_clientes = []
                 s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                print "Escutando a porta..."
                 s.bind((HOST,PORT))
                 s.listen(1)
-                print "Aceitando a conexao..."
                 conn,addr= s.accept()
                 print addr
                 lista_clientes.append(addr)

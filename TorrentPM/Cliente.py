@@ -13,7 +13,7 @@ class Cliente:
                 #self.enviar(s)
 
 
- # tentando criar um servidor, para esperar a resposta de outro controller
+ #envia um pedido para outro servidor, e esperando a resposta do mesmo
         def enviar(self, escolha,nome):
                 HOST='localhost' #coloca o host do servidor
                 PORT=57001
@@ -25,7 +25,7 @@ class Cliente:
                 print "Aceitando a conexao..."
 
                 # con, addr = s.accept()
-                arq = open('arquivuns.mp3','w+b') #abrindo o arquivo para escrever o dado recebido
+                arq = open('arquivuns.mp3','wr') #abrindo o arquivo para escrever o dado recebido
 
                 while True:
                         d=s.recv(1024)
@@ -35,6 +35,8 @@ class Cliente:
                         da=d.split(',')
                         if da[0]=="2":
                                 return d
+                        dado = base64.b64decode(d)
+                        print dado
                         arq.write(d)
                         #print d
                         if not d:
@@ -46,10 +48,11 @@ class Cliente:
 
         def enviar_arquivo(self,conn, nome):
                 print "abrindo arquivo..."
-                arq= open(nome,'r+b')
+                arq= open(nome,'r')
                 for i in arq.readlines():
                         #print i
-                        #dado=base64.standard_b64encode(i)
+                        dado=base64.b64encode(i)
+                        #print dado
                         conn.send(i)
                 print "saindo..."
                 arq.close()
