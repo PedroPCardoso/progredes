@@ -87,10 +87,10 @@ class Controller():
         root = tree.getroot() # recupera a tag principal
 
         for child in root: # procura os subelements
-            if child.tag == getHosts:
+            if child.tag == ("getHosts"):
                 return getHostsResponse() #retorna o xml com a lista de ips e portas ///  transmitir/enviar
 
-            if child.tag == getHostsResponse:
+            if child.tag == ("getHostsResponse"):
                 lista_ips = []
                 lista_ports = []
                 for ips  in root.iter('ip'):
@@ -104,11 +104,11 @@ class Controller():
                     print ('IP:', lista_ips[i])
                     print ('PORTA:', lista_ports[i])
 
-            if child.tag == searchFiles:
+            if child.tag == ("searchFiles"):
                 palavrachave = root.iter('keywords')
                 return searchMetadados(palavrachave, opcao) #numero da opção se for rocurar pelo nome ou pelo tamanho /// retorna o xml de searchresponde
 
-            if child.tag == searchFilesResponse:
+            if child.tag == ("searchFilesResponse"):
                 lista_nome = []
                 lista_tamanho = []
                 for nome  in root.iter('fileName'):
@@ -117,11 +117,11 @@ class Controller():
                     lista_tamanho.append(tamanho.attrib) # cria uma lista com todos os tamanhos
 
 
-            if child.tag == getFiles:
+            if child.tag == ("getFiles"):
                 palavrachave = root.iter('fileName')
                 return getFilesResponse(palavrachave)
 
-            if child.tag == getFilesResponse:
+            if child.tag == ("getFilesResponse"):
                 data = root.iter('data')
                 decode_data = decode64(data)
                 nome_arquivo = root.iter('fileName')
@@ -136,24 +136,24 @@ Controller()
 def savingHosts(ip, port): #quando se conectar a alguem chama essa função
     arquivo = open('/lista_ips_ports.txt','a') #ler o txt antes e jogar no sets
     lista = []
-    lista.append (ip + ',' + port)
+    lista.append (ip + ',' + port + '\n') #ANOTAÇÃO tem que ver se funfa esse barra n
     arquivo.writelines(lista)
     arquivo.close()
 
 
-
+#ok
 def searchMetadadosLocal(keywords, opcao): #procurando pelo tamanho do arquivo
     list_arqs = []
     j = 0
     if opcao == "1": #nome do arquivo
-        list_arqs = os.listdir('/')
+        list_arqs = os.listdir('C:/Users/Manu/Documents/server') #mudar o caminho para a pasta que quer
 
     if opcao == "2": #formato do arquivo
         list_arqs = glob.glob(keywords)
 
     for i in list_arqs:
         if keywords == i:
-            fileSize = os.path.getsize('/' + i)
+            fileSize = os.path.getsize('C:/Users/Manu/Documents/server/' + i) # mudar p caminho para a pasta que quer
             print (i)
             print (fileSize)
 
@@ -200,7 +200,7 @@ def decode64(data):
 
 
 #----------------------------------------------------------------------------XML--------------------------------------------------------------------
-
+#OK
 def getHosts(): #pede lista de hosts
     root = ET.Element('p2pse')
     gethosts = ET.SubElement(root,'getHosts')
@@ -208,10 +208,9 @@ def getHosts(): #pede lista de hosts
     #xml_gethosts = ET.ElementTree(root)
     xml_gethosts = ET.dump(root)
 
-    return xml_gethosts
+    return xml_gethosts #tem problema aqui, quando do print aqui aparece none
 
-
-
+#OK
 def getHostsResponse(): #responde com a lista dos hosts
     root = ET.Element('p2pse')
     gethostsresponse = ET.SubElement(root,'getHostsResponse')
@@ -232,6 +231,7 @@ def getHostsResponse(): #responde com a lista dos hosts
 
     return xml_gethostsresponse
 
+#OK
 def searchFiles(keywords): #manda procurar o arquivo de acordo com as palavras chaves, precisa de leitura pra saber quais as palavras
     root = ET.Element('p2pse')
     searchfiles = ET.SubElement(root,'searchFiles')
@@ -244,6 +244,7 @@ def searchFiles(keywords): #manda procurar o arquivo de acordo com as palavras c
 
     return xml_searchFiles
 
+#pra testar isso aqui preciso testar searchMetadados :O
 def searchFilesResponse(nome_arq, tam_arq): #devolve os dados do arquivo que foi pedido
     root = ET.Element('p2pse')
     searchfileresponse = ET.SubElement(root,'searchFilesResponse')
