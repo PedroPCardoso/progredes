@@ -10,6 +10,10 @@ import os
 import glob
 import base64
 from threading import Thread
+import sys
+from xml.parsers.xmlproc import xmlproc
+from xml.parsers.xmlproc import xmlval
+from xml.parsers.xmlproc import xmldtd
 
 class Controller():
 
@@ -211,10 +215,12 @@ def getHosts(): #pede lista de hosts
     root = ET.Element('p2pse')
     gethosts = ET.SubElement(root,'getHosts')
 
-    #xml_gethosts = ET.ElementTree(root)
-    xml_gethosts = ET.dump(root)
+    xml_gethosts = ET.ElementTree(root)
+    ET.dump(root)
 
-    return xml_gethosts #tem problema aqui, quando do print aqui aparece none
+    xml_gethosts.write('getHosts.xml')
+
+    #return xml_gethosts #tem problema aqui, quando do print aqui aparece none
 
 #OK
 def getHostsResponse(): #responde com a lista dos hosts
@@ -232,10 +238,11 @@ def getHostsResponse(): #responde com a lista dos hosts
             port.text = i_t[1]
     arquivo_ips.close()
 
- #   arq = ET.ElementTree(root)
-    xml_gethostsresponse = ET.dump(root)
+    xml_gethostsresponse = ET.ElementTree(root)
+    ET.dump(root)
 
-    return xml_gethostsresponse
+    xml_gethostsresponse.write('getHostsResponse.xml')
+    #return xml_gethostsresponse
 
 #OK
 def searchFiles(keywords): #manda procurar o arquivo de acordo com as palavras chaves, precisa de leitura pra saber quais as palavras
@@ -245,10 +252,12 @@ def searchFiles(keywords): #manda procurar o arquivo de acordo com as palavras c
 
     keywords2.text = keywords
 
-    #arq = ET.ElementTree(root)
-    xml_searchFiles = ET.dump(root)
+    xml_searchFiles = ET.ElementTree(root)
+    ET.dump(root)
 
-    return xml_searchFiles
+
+    xml_searchFiles.write('searchFiles.xml')
+    #return xml_searchFiles
 
 #pra testar isso aqui preciso testar searchMetadados :O
 def searchFilesResponse(nome_arq, tam_arq): #devolve os dados do arquivo que foi pedido
@@ -264,10 +273,11 @@ def searchFilesResponse(nome_arq, tam_arq): #devolve os dados do arquivo que foi
             fileSize2.text = j
             break
 
-   # arq = ET.ElementTree(root)
-    xml_searchFilesResponse = ET.dump(root)
+    xml_searchFilesResponse = ET.ElementTree(root)
+    ET.dump(root)
 
-    return  xml_searchFilesResponse
+    xml_searchFilesResponse.write('searchFilesResponse.xml')
+    #return  xml_searchFilesResponse
 
 def getFiles(fileName): #dá o nome do arquivo pra receber o mesmo
     root = ET.Element('p2pse')
@@ -276,10 +286,11 @@ def getFiles(fileName): #dá o nome do arquivo pra receber o mesmo
 
     fileName2.text = fileName
 
-    #arq = ET.ElementTree(root)
-    xml_getFiles = ET.dump(root)
+    xml_getFiles = ET.ElementTree(root)
+    ET.dump(root)
 
-    return  xml_getFiles
+    xml_getFiles.write('getFiles.xml')
+    #return  xml_getFiles
 
 def getFilesResponse(fileName): #devolve o arquivo
     root = ET.Element('p2pse')
@@ -291,7 +302,25 @@ def getFilesResponse(fileName): #devolve o arquivo
     fileName2.text = fileName
     data2.text = encode64(fileName)
 
-    #arq = ET.ElementTree(root)
-    xml_getFiles = ET.dump(root)
+    xml_getFilesresponse = ET.ElementTree(root)
+    ET.dump(root)
 
-    return  xml_getFiles
+    xml_getFilesresponse.write('getfilesResponse.xml')
+
+    #return  xml_getFiles
+
+    def validate_xml(xml_filename, dtd_filename):
+    """Validate a given XML file with a given external DTD.
+       If the XML file is not valid, an exception will be
+         printed with an error message.
+    """
+    dtd = xmldtd.load_dtd(dtd_filename)
+    parser = xmlproc.XMLProcessor()
+    parser.set_application(xmlval.ValidatingApp(dtd, parser))
+    parser.dtd = dtd
+    parser.ent = dtd
+    parser.parse_resource(xml_filename)
+
+    if __name__ == "__main__":
+        xml_filename, dtd_filename = sys.argv[1], sys.argv[2]
+        validate_xml(xml_filename, dtd_filename)
