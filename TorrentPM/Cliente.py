@@ -23,35 +23,34 @@ class Cliente:
                 texto=escolha+","+nome
                 s.send(texto)
                 print "Aceitando a conexao..."
+                if ( escolha == "3"):
+                    # con, addr = s.accept()
+                    arq = open('arquivuns.mp3','wr') #abrindo o arquivo para escrever o dado recebido
 
-                # con, addr = s.accept()
-                arq = open('arquivuns.mp3','wr') #abrindo o arquivo para escrever o dado recebido
-
-                while True:
-                        d=s.recv(1024)
-                        if d== "NE":
-                                print "O Host nao tem esse Arquivo"
-                                break
-                        da=d.split(',')
-                        if da[0]=="2":
-                                return d
-                        dado = base64.b64decode(d)
-                        print dado
-                        arq.write(d)
-                        #print d
-                        if not d:
-                                break
-                print "gravando no arquivo"
-                arq.close()
+                    while True:
+                            d=s.recv(1024)
+                            if d== "NE":
+                                    print "O Host nao tem esse Arquivo"
+                                    break
+                            da=d.split(',')
+                            if da[0]=="2":
+                                    return d
+                            #dado = base64.b64decode(d)
+                            #print dado
+                            arq.write(d)
+                            #print d
+                            if not d:
+                                    break
+                    print "gravando no arquivo"
+                    arq.close()
                 s.close()
 
 
         def enviar_arquivo(self,conn, nome):
                 print "abrindo arquivo..."
-                arq= open(nome,'r')
+                arq= open(nome,'rb')
                 for i in arq.readlines():
-                        #print i
-                        dado=base64.b64encode(i)
+                        #dado=base64.b64encode(i)
                         #print dado
                         conn.send(i)
                 print "saindo..."

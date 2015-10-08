@@ -36,7 +36,7 @@ class Controller():
             #c.enviar(nome)
           #  listHosts()  #lê o arquivo local de ip e portas e mostra
         if "2" == escolha:
-             xml= raw_input("xml")
+             pedido="2"
              #XMLENVIADO=getHosts() #tem que enviar esse xml pro outro pc e receber o xml de resposta
              XMLRECEBIDO=self.cliente(escolha,xml)
              print XMLRECEBIDO
@@ -49,9 +49,9 @@ class Controller():
             opcao = raw_input("Deseja procurar por: (1) Nome do arquivo seguido do seu formato")
             if opcao == "1":
                 print "Digite o nome do arquivo junto com o formato do arquivo:"
-            if opcao == "2":
-                print "Digite o formato do arquivo:"
-                print "formato deve ser digitado dessa forma: *.mp3"
+            # if opcao == "2":
+            #     print "Digite o formato do arquivo:"
+            #     print "formato deve ser digitado dessa forma: *.mp3"
             keywords = raw_input()
             #self.searchMetadadosLocal(keywords,opcao)
             self.cliente(escolha,keywords)
