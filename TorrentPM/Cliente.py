@@ -23,6 +23,20 @@ class Cliente:
                 texto=escolha+","+nome
                 s.send(texto)
                 print "Aceitando a conexao..."
+                if (escolha =="2"):
+                        while True:
+                            d=s.recv(1024)
+
+                            break;
+
+                        da=d.split(',')
+                        print "recebendo hostis"
+                        arq = open('Hostis.txt','wb')
+                        for i in da:
+                            arq.write(i)
+                        arq.close()
+
+
                 if ( escolha == "3"):
                     # con, addr = s.accept()
                     arq = open('arquivuns.mp3','wr') #abrindo o arquivo para escrever o dado recebido
@@ -33,8 +47,6 @@ class Cliente:
                                     print "O Host nao tem esse Arquivo"
                                     break
                             da=d.split(',')
-                            if da[0]=="2":
-                                    return d
                             #dado = base64.b64decode(d)
                             #print dado
                             arq.write(d)

@@ -11,10 +11,11 @@ import glob
 import base64
 from threading import Thread
 import sys
+'''
 from xml.parsers.xmlproc import xmlproc
 from xml.parsers.xmlproc import xmlval
 from xml.parsers.xmlproc import xmldtd
-
+'''
 class Controller():
 
     def __init__(self):
@@ -42,9 +43,9 @@ class Controller():
         if "2" == escolha:
              pedido="2"
              #XMLENVIADO=getHosts() #tem que enviar esse xml pro outro pc e receber o xml de resposta
-             XMLRECEBIDO=self.cliente(escolha,xml)
-             print XMLRECEBIDO
-            # string_xml(XMLRECEBIDO,3)
+             self.cliente(escolha,pedido)
+             print "lista recebida com sucesso"
+             # string_xml(XMLRECEBIDO,3)
 
 
 
@@ -53,11 +54,10 @@ class Controller():
             opcao = raw_input("Deseja procurar por: (1) Nome do arquivo seguido do seu formato")
             if opcao == "1":
                 print "Digite o nome do arquivo junto com o formato do arquivo:"
-            # if opcao == "2":
-            #     print "Digite o formato do arquivo:"
+            # if opcao == "gite o formato do arquivo:"
             #     print "formato deve ser digitado dessa forma: *.mp3"
             keywords = raw_input()
-            #self.searchMetadadosLocal(keywords,opcao)
+            #self.searchMetywords,opcao)
             self.cliente(escolha,keywords)
             #t = threading.Thread(target=self.cliente, args=(keywords))
             #t.start()
@@ -68,7 +68,7 @@ class Controller():
                 print "Digite o nome do arquivo:"
             if opcao == "2":
                 print "Digite o formato do arquivo:"
-                print "formato deve ser digitado dessa forma: *.mp3"
+                print "formato deve ser digitado dessa forma: .mp3"
             keywords = raw_input()
             XMLRECEBIDO=self.searchfiles(keywords) #gera xml pra ser enviada
             string_xml(XMLRECEBIDO,opcao)  #xml que ele recebe do outro host
@@ -308,19 +308,36 @@ def getFilesResponse(fileName): #devolve o arquivo
     xml_getFilesresponse.write('getfilesResponse.xml')
 
     #return  xml_getFiles
+'''
+def validate_xml(xml_filename, dtd_filename):
+        Validate a given XML file with a given external DTD.
+        If the XML file is not valid, an exception will be
+        printed with an error message.
+        dtd = xmldtd.load_dtd(dtd_filename)
+        parser = xmlproc.XMLProcessor()
+        parser.set_application(xmlval.ValidatingApp(dtd, parser))
+        parser.dtd = dtd
+        parser.ent = dtd
+        parser.parse_resource(xml_filename)
+
+        if __name__ == "__main__":
+            xml_filename, dtd_filename = sys.argv[1], sys.argv[2]
+            validate_xml(xml_filename, dtd_filename)
+        '''
+"""
 
     def validate_xml(xml_filename, dtd_filename):
-    """Validate a given XML file with a given external DTD.
+Validate a given XML file with a given external DTD.
        If the XML file is not valid, an exception will be
          printed with an error message.
-    """
-    dtd = xmldtd.load_dtd(dtd_filename)
-    parser = xmlproc.XMLProcessor()
-    parser.set_application(xmlval.ValidatingApp(dtd, parser))
-    parser.dtd = dtd
-    parser.ent = dtd
-    parser.parse_resource(xml_filename)
+        dtd = xmldtd.load_dtd(dtd_filename)
+        parser = xmlproc.XMLProcessor()
+        parser.set_application(xmlval.ValidatingApp(dtd, parser))
+        parser.dtd = dtd
+        parser.ent = dtd
+        parser.parse_resource(xml_filename)
 
     if __name__ == "__main__":
         xml_filename, dtd_filename = sys.argv[1], sys.argv[2]
         validate_xml(xml_filename, dtd_filename)
+"""

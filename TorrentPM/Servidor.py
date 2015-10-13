@@ -30,11 +30,10 @@ class Servidor:
                         print(d)
                         da=d.split(",")
                         print da
+                        print "ta no servidor"
                         #dados=base64.standard_b64decode(d)
                         if da[0] == '3':
                                         if self.arquivo(da[1],c):
-                                        #s.connect((ho,po))
-                                       # conn.send("recebeu")
                                                  print "enviando o arquivo"
                                                  c.enviar_arquivo(conn,da[1])
                                                  conn.close()
@@ -42,14 +41,19 @@ class Servidor:
                                                 conn.send("NE")  #caso o arquivo nao seja encontrado
                                                 break
                         if da[0] == '2':
-                                text= self.solicitaHost()
-                                print text
-                                conn.send("2"+","+text)
+                             #tentando enviar a lista de jogos aqui, solicitados pelo clieente la na classe cliente
+                                texto=self.solicitaHost()
+                                print texto
+                                print " enviando resposta"
+                                resp = "2"+texto
+                                conn.send(resp)
+                                conn.close()
                                 break
                         elif not d:
                                 break
 
-                print "saindo..."
+                print "saindo... do serve"
+                conn.close()
 
 
         def arquivo(self,nome,c):
@@ -60,7 +64,7 @@ class Servidor:
                                 return True
                 return False
 #nome do arquivo
-        def savingHosts(self,ip, port): #quando se conectar a alguem chama essa funç
+        def savingHosts(self,ip, port): #quando se conectar a alguem chama essa func
                     arquivo = open('lista_ips.txt','a') #ler o txt antes e jogar no sets
                     texto=ip + ',' + port
                     arquivo.write(texto)
@@ -68,8 +72,6 @@ class Servidor:
         def solicitaHost(self):
                 arquivo = open('lista_ips.txt','r') #ler o txt antes e jogar no sets
                 lista = ""
-                print "solicita"
-                print arquivo.readline()
                 for e in arquivo.readlines():
-                         lista=+str(e)
+                         lista+=str(e)
                 return lista
