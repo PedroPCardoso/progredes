@@ -66,7 +66,7 @@ class Servidor:
 #nome do arquivo
         def savingHosts(self,ip, port): #quando se conectar a alguem chama essa func
                     arquivo = open('lista_ips.txt','a') #ler o txt antes e jogar no sets
-                    texto=ip + ',' + port
+                    texto=ip + ',' + port + "\n"
                     arquivo.write(texto)
                     arquivo.close()
         def solicitaHost(self):
