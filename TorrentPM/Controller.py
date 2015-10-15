@@ -51,10 +51,8 @@ class Controller():
 
         if "3" == escolha:
 
-            opcao = raw_input("Deseja procurar por: (1) Nome do arquivo seguido do seu formato")
-            if opcao == "1":
-                print "Digite o nome do arquivo junto com o formato do arquivo:"
-            # if opcao == "gite o formato do arquivo:"
+            opcao = raw_input("Digite Nome do arquivo seguido do seu formato : ")
+
             #     print "formato deve ser digitado dessa forma: *.mp3"
             keywords = raw_input()
             #self.searchMetywords,opcao)

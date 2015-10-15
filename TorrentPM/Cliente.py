@@ -5,6 +5,8 @@ import socket
 import base64
 import glob
 from threading import Thread
+import xml.etree.ElementTree as ET #sql = ET
+
 class Cliente:
         def __init__(self):
                 s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
@@ -20,7 +22,16 @@ class Cliente:
                 s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
                 print "conectando com servidor..."
                 s.connect((HOST,PORT))
-                
+
+                if escolha=="2":
+                    root = ET.Element('p2pse')
+                    gethosts = ET.SubElement(root,'getHosts')
+
+                    xml_gethosts = ET.ElementTree(root)
+                    ET.dump(root)
+
+                    xml_gethosts.write('getHosts.xml')
+
 
 
 
@@ -61,6 +72,14 @@ class Cliente:
                     arq.close()
                 s.close()
 
+        def getHosts(): #pede lista de hosts
+            root = ET.Element('p2pse')
+            gethosts = ET.SubElement(root,'getHosts')
+
+            xml_gethosts = ET.ElementTree(root)
+            ET.dump(root)
+
+            xml_gethosts.write('getHosts.xml')
 
         def enviar_arquivo(self,conn, nome):
                 print "abrindo arquivo..."
@@ -121,8 +140,7 @@ class Cliente:
 
                 if child.tag == ("searchFiles"):
                     palavrachave = root.iter('keywords')
-                    return searchMetadados(palavrachave, opcao) #numero da opção se for rocurar pelo nome ou pelo tamanho /// retorna o xml de searchresponde
-
+                    return searchMetadados(palavrachave, opcao)
                 if child.tag == ("searchFilesResponse"):
                     lista_nome = []
                     lista_tamanho = []
@@ -206,14 +224,7 @@ class Cliente:
 
         #----------------------------------------------------------------------------XML--------------------------------------------------------------------
         #OK
-        def getHosts(): #pede lista de hosts
-            root = ET.Element('p2pse')
-            gethosts = ET.SubElement(root,'getHosts')
 
-            xml_gethosts = ET.ElementTree(root)
-            ET.dump(root)
-
-            xml_gethosts.write('getHosts.xml')
 
             #return xml_gethosts #tem problema aqui, quando do print aqui aparece none
 
@@ -274,7 +285,7 @@ class Cliente:
             xml_searchFilesResponse.write('searchFilesResponse.xml')
             #return  xml_searchFilesResponse
 
-        def getFiles(fileName): #dá o nome do arquivo pra receber o mesmo
+        def getFiles(fileName): #da o nome do arquivo pra receber o mesmo
             root = ET.Element('p2pse')
             getFiles = ET.SubElement(root,'getFiles')
             fileName2 = ET.SubElement(getFiles, 'fileName')
