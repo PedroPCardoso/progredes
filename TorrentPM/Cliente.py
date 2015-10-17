@@ -31,25 +31,24 @@ class Cliente:
                     ET.dump(root)
 
                     xml_gethosts.write('getHosts.xml')
-
+                    self.enviar_arquivo(s,"getHosts.xml")
 
 
 
                 texto=escolha+","+nome
+
                 s.send(texto)
                 print "Aceitando a conexao..."
-                if (escolha =="2"):
-                        while True:
-                            d=s.recv(1024)
+                while True:
+                    d=s.recv(1024)
 
-                            break;
+                    break;
 
-                        da=d.split(',')
-                        print "recebendo hostis"
-                        arq = open('Hostis.txt','wb')
-                        for i in da:
-                            arq.write(i)
-                        arq.close()
+                print "recebendo hostis"
+                arq = open('Hostis.xml','wb')
+                for i in d:
+                    arq.write(i)
+                arq.close()
 
 
                 if ( escolha == "3"):
@@ -112,56 +111,6 @@ class Cliente:
 
 
 # Parte de tratamento de dados #
-
-
-
-
-        def string_xml(reading_allXml, opcao): #chega a string xml pra ler e saber o que e
-            tree = ET.parse(reading_allXml+".xml")
-            root = tree.getroot() # recupera a tag principal
-
-            for child in root: # procura os subelements
-                if child.tag == ("getHosts"):
-                    return getHostsResponse() #retorna o xml com a lista de ips e portas ///  transmitir/enviar
-
-                if child.tag == ("getHostsResponse"):
-                    lista_ips = []
-                    lista_ports = []
-                    for ips  in root.iter('ip'):
-                        lista_ips.append(ips.attrib) # cria uma lista com todos os ips
-                    for port in root.iter('port'):
-                        lista_ports.append(port.attrib) # cria uma lista com todas as portas
-
-                    tamanho = lista_ips.lenght
-                    print "LISTA DE IPS E PORTAS"
-                    for i in range(0,(tamanho-1)):
-                        print ('IP:', lista_ips[i])
-                        print ('PORTA:', lista_ports[i])
-
-                if child.tag == ("searchFiles"):
-                    palavrachave = root.iter('keywords')
-                    return searchMetadados(palavrachave, opcao)
-                if child.tag == ("searchFilesResponse"):
-                    lista_nome = []
-                    lista_tamanho = []
-                    for nome  in root.iter('fileName'):
-                        lista_nome.append(nome.attrib) # cria uma lista com todos os nomes
-                    for tamanho in root.iter('fileSize'):
-                        lista_tamanho.append(tamanho.attrib) # cria uma lista com todos os tamanhos
-
-
-                if child.tag == ("getFiles"):
-                    palavrachave = root.iter('fileName')
-                    return getFilesResponse(palavrachave)
-
-                if child.tag == ("getFilesResponse"):
-                    data = root.iter('data')
-                    decode_data = decode64(data)
-                    nome_arquivo = root.iter('fileName')
-                    arquivo_recebido = open(nome_arquivo, 'w')
-                    arquivo_recebido.write(decode_data)
-                    arquivo_recebido.close()
-
 
 
             #ok
@@ -229,7 +178,7 @@ class Cliente:
             #return xml_gethosts #tem problema aqui, quando do print aqui aparece none
 
         #OK
-        def getHostsResponse(): #responde com a lista dos hosts
+        def getHostsResponse(self): #responde com a lista dos hosts
             root = ET.Element('p2pse')
             gethostsresponse = ET.SubElement(root,'getHostsResponse')
             host = ET.SubElement(gethostsresponse,'host')
@@ -248,9 +197,9 @@ class Cliente:
             ET.dump(root)
 
             xml_gethostsresponse.write('getHostsResponse.xml')
-            #return xml_gethostsresponse
+                    #return xml_gethostsresponse
 
-        #OK
+            #OK
         def searchFiles(keywords): #manda procurar o arquivo de acordo com as palavras chaves, precisa de leitura pra saber quais as palavras
             root = ET.Element('p2pse')
             searchfiles = ET.SubElement(root,'searchFiles')
@@ -312,3 +261,54 @@ class Cliente:
             ET.dump(root)
 
             xml_getFilesresponse.write('getfilesResponse.xml')
+
+
+
+
+
+
+        def string_xml(self,reading_allXml, opcao): #chega a string xml pra ler e saber o que e
+            tree = ET.parse(reading_allXml)
+            root = tree.getroot() # recupera a tag principal
+
+            for child in root: # procura os subelements
+                if child.tag == ("getHosts"):
+                    return self.getHostsResponse() #retorna o xml com a lista de ips e portas ///  transmitir/enviar
+
+                if child.tag == ("getHostsResponse"):
+                    lista_ips = []
+                    lista_ports = []
+                    for ips  in root.iter('ip'):
+                        lista_ips.append(ips.attrib) # cria uma lista com todos os ips
+                    for port in root.iter('port'):
+                        lista_ports.append(port.attrib) # cria uma lista com todas as portas
+
+                    tamanho = lista_ips.lenght
+                    print "LISTA DE IPS E PORTAS"
+                    for i in range(0,(tamanho-1)):
+                        print ('IP:', lista_ips[i])
+                        print ('PORTA:', lista_ports[i])
+
+                if child.tag == ("searchFiles"):
+                    palavrachave = root.iter('keywords')
+                    return searchMetadados(palavrachave, opcao)
+                if child.tag == ("searchFilesResponse"):
+                    lista_nome = []
+                    lista_tamanho = []
+                    for nome  in root.iter('fileName'):
+                        lista_nome.append(nome.attrib) # cria uma lista com todos os nomes
+                    for tamanho in root.iter('fileSize'):
+                        lista_tamanho.append(tamanho.attrib) # cria uma lista com todos os tamanhos
+
+
+                if child.tag == ("getFiles"):
+                    palavrachave = root.iter('fileName')
+                    return getFilesResponse(palavrachave)
+
+                if child.tag == ("getFilesResponse"):
+                    data = root.iter('data')
+                    decode_data = decode64(data)
+                    nome_arquivo = root.iter('fileName')
+                    arquivo_recebido = open(nome_arquivo, 'w')
+                    arquivo_recebido.write(decode_data)
+                    arquivo_recebido.close()

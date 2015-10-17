@@ -29,10 +29,22 @@ class Servidor:
                         d=conn.recv(1024)
                         print(d)
                         da=d.split(",")
-                        print da
+                        #print da
                         print "ta no servidor"
                         #dados=base64.standard_b64decode(d)
-                        if da[0] == '3':
+                        arq = open('pergunta.xml','wb')
+                        for i in da[0]:
+                            arq.write(i)
+                        arq.close()
+
+
+                        c.string_xml("pergunta.xml",1)
+
+                        c.enviar_arquivo(conn,"getHostsResponse.xml")
+                        conn.close()
+                        break
+                        """
+                        if da[1] == '3':
                                         if self.arquivo(da[1],c):
                                                  print "enviando o arquivo"
                                                  c.enviar_arquivo(conn,da[1])
@@ -40,18 +52,14 @@ class Servidor:
                                         else:
                                                 conn.send("NE")  #caso o arquivo nao seja encontrado
                                                 break
-                        if da[0] == '2':
+                        if da[1] == '2':
                              #tentando enviar a lista de jogos aqui, solicitados pelo clieente la na classe cliente
-                                texto=self.solicitaHost()
+                            #    texto=self.solicitaHost()
                                 print texto
                                 print " enviando resposta"
-                                resp = "2"+texto
-                                conn.send(resp)
-                                conn.close()
                                 break
                         elif not d:
-                                break
-
+                            """
                 print "saindo... do serve"
                 conn.close()
 
