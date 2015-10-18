@@ -179,7 +179,7 @@ def validate_xml(xml_filename, dtd_filename):
         '''
 """
 
-    def validate_xml(xml_filename, dtd_filename):
+def validate_xml(xml_filename, dtd_filename):
 Validate a given XML file with a given external DTD.
        If the XML file is not valid, an exception will be
          printed with an error message.
@@ -190,7 +190,7 @@ Validate a given XML file with a given external DTD.
         parser.ent = dtd
         parser.parse_resource(xml_filename)
 
-    if __name__ == "__main__":
+if __name__ == "__main__":
         xml_filename, dtd_filename = sys.argv[1], sys.argv[2]
         validate_xml(xml_filename, dtd_filename)
 """

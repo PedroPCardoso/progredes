@@ -32,44 +32,50 @@ class Cliente:
 
                     xml_gethosts.write('getHosts.xml')
                     self.enviar_arquivo(s,"getHosts.xml")
-
-
-
-                texto=escolha+","+nome
-
-                s.send(texto)
-                print "Aceitando a conexao..."
-                while True:
-                    d=s.recv(1024)
-
-                    break;
-
-                print "recebendo hostis"
-                arq = open('Hostis.xml','wb')
-                for i in d:
-                    arq.write(i)
-                arq.close()
-
-
-                if ( escolha == "3"):
-                    # con, addr = s.accept()
-                    arq = open('arquivuns.mp3','wr') #abrindo o arquivo para escrever o dado recebido
-
+                    #s.send(texto)
+                    print "Aceitando a conexao..."
                     while True:
-                            d=s.recv(1024)
-                            if d== "NE":
-                                    print "O Host nao tem esse Arquivo"
-                                    break
-                            da=d.split(',')
-                            #dado = base64.b64decode(d)
-                            #print dado
-                            arq.write(d)
-                            #print d
-                            if not d:
-                                    break
-                    print "gravando no arquivo"
+                        d=s.recv(1024)
+
+                        break;
+
+                    print "recebendo hostis"
+                    arq = open('Hostis.xml','wb')
+                    for i in d:
+                        arq.write(i)
                     arq.close()
-                s.close()
+
+                if escolha=="3":
+
+                    root = ET.Element('p2pse')
+                    getFiles = ET.SubElement(root,'getFiles')
+                    fileName2 = ET.SubElement(getFiles, 'fileName')
+
+                    fileName2.text = nome
+
+                    xml_getFiles = ET.ElementTree(root)
+                    ET.dump(root)
+
+                    xml_getFiles.write('getFiles.xml')
+
+                    self.enviar_arquivo("getFiles.xml")
+                    #texto=escolha+","+nome
+
+                    #s.send(texto)
+                    print "Aceitando a conexao..."
+                    while True:
+                        d=s.recv(1024)
+
+                        break;
+
+                    print "recebendo hostis"
+                    arq = open('Hostis.jpg','wb')
+
+                    for i in d:
+                        arq.write(self.decode64(i))
+                    arq.close()
+
+
 
         def getHosts(): #pede lista de hosts
             root = ET.Element('p2pse')
@@ -103,6 +109,20 @@ class Cliente:
 
 
 
+        def getFilesResponse(fileName,filedata): #devolve o arquivo
+            root = ET.Element('p2pse')
+            getFilesResponse = ET.SubElement(root,'getFilesResponse')
+            fileData2 = ET.SubElement(getFilesResponse,'fileData')
+            fileName2 = ET.SubElement(fileData2,'fileName')
+            data2 = ET.Element(fileData2,'data')
+
+            fileName2.text = fileName
+            data2.text = encode64(fileName)
+
+            xml_getFilesresponse = ET.ElementTree(root)
+            ET.dump(root)
+
+            xml_getFilesresponse.write('getfilesResponse.xml')
 
 
 
@@ -113,7 +133,7 @@ class Cliente:
 # Parte de tratamento de dados #
 
 
-            #ok
+        ''    #ok
         def searchMetadadosLocal(keywords, opcao): #procurando pelo tamanho do arquivo
             list_arqs = []
             j = 0
@@ -247,20 +267,6 @@ class Cliente:
             xml_getFiles.write('getFiles.xml')
             #return  xml_getFiles
 
-        def getFilesResponse(fileName): #devolve o arquivo
-            root = ET.Element('p2pse')
-            getFilesResponse = ET.SubElement(root,'getFilesResponse')
-            fileData2 = ET.SubElement(getFilesResponse,'fileData')
-            fileName2 = ET.SubElement(fileData2,'fileName')
-            data2 = ET.Element(fileData2,'data')
-
-            fileName2.text = fileName
-            data2.text = encode64(fileName)
-
-            xml_getFilesresponse = ET.ElementTree(root)
-            ET.dump(root)
-
-            xml_getFilesresponse.write('getfilesResponse.xml')
 
 
 
@@ -307,6 +313,7 @@ class Cliente:
 
                 if child.tag == ("getFilesResponse"):
                     data = root.iter('data')
+
                     decode_data = decode64(data)
                     nome_arquivo = root.iter('fileName')
                     arquivo_recebido = open(nome_arquivo, 'w')
