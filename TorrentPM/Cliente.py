@@ -133,7 +133,7 @@ class Cliente:
 # Parte de tratamento de dados #
 
 
-        ''    #ok
+         #ok
         def searchMetadadosLocal(keywords, opcao): #procurando pelo tamanho do arquivo
             list_arqs = []
             j = 0
@@ -201,11 +201,11 @@ class Cliente:
         def getHostsResponse(self): #responde com a lista dos hosts
             root = ET.Element('p2pse')
             gethostsresponse = ET.SubElement(root,'getHostsResponse')
-            host = ET.SubElement(gethostsresponse,'host')
 
             arquivo_ips = open('lista_ips.txt', 'r')
             lista_ips = arquivo_ips.readlines()
             for i in lista_ips:
+                    host = ET.SubElement(gethostsresponse,'host')
                     ip = ET.SubElement(host,'ip')
                     port = ET.SubElement(host,'port')
                     i_t = i.split(',')
@@ -238,9 +238,9 @@ class Cliente:
         def searchFilesResponse(nome_arq, tam_arq): #devolve os dados do arquivo que foi pedido
             root = ET.Element('p2pse')
             searchfileresponse = ET.SubElement(root,'searchFilesResponse')
-            file2 = ET.SubElement(searchfileresponse,'file')
 
             for i in nome_arq: # percorre as linhas da matriz (nome)
+                file2 = ET.SubElement(searchfileresponse,'file')
                 fileName2 = ET.SubElement(file2,'fileName')
                 fileName2.text = i
                 for j in tam_arq: #percorre as colunas (tamanho)
@@ -268,52 +268,45 @@ class Cliente:
             #return  xml_getFiles
 
 
-
-
-
-
-
         def string_xml(self,reading_allXml, opcao): #chega a string xml pra ler e saber o que e
-            tree = ET.parse(reading_allXml)
+            tree = ET.parse(reading_allXml + ".xml")
             root = tree.getroot() # recupera a tag principal
 
             for child in root: # procura os subelements
+
                 if child.tag == ("getHosts"):
-                    return self.getHostsResponse() #retorna o xml com a lista de ips e portas ///  transmitir/enviar
+                    self.getHostsResponse() #cria o  xml com a lista de ips e portas ///  transmitir/enviar
 
-                if child.tag == ("getHostsResponse"):
-                    lista_ips = []
-                    lista_ports = []
-                    for ips  in root.iter('ip'):
-                        lista_ips.append(ips.attrib) # cria uma lista com todos os ips
-                    for port in root.iter('port'):
-                        lista_ports.append(port.attrib) # cria uma lista com todas as portas
-
-                    tamanho = lista_ips.lenght
-                    print "LISTA DE IPS E PORTAS"
-                    for i in range(0,(tamanho-1)):
-                        print ('IP:', lista_ips[i])
-                        print ('PORTA:', lista_ports[i])
+                if child.tag == ("getHostsResponse"): #adiciona no arquivo os ips e portas recebidos
+                    arquivo = open('/lista_ips_ports.txt','a') #ler o txt antes e jogar no sets
+                    lista = []
+                    for hosts in root.iter('host'):
+                        ip = hosts.find('ip').text
+                        port = hosts.find('port').text
+                        lista.append (ip + ',' + port + '\n')
+                    arquivo.writelines(lista)
+                    arquivo.close()
 
                 if child.tag == ("searchFiles"):
                     palavrachave = root.iter('keywords')
-                    return searchMetadados(palavrachave, opcao)
-                if child.tag == ("searchFilesResponse"):
-                    lista_nome = []
-                    lista_tamanho = []
-                    for nome  in root.iter('fileName'):
-                        lista_nome.append(nome.attrib) # cria uma lista com todos os nomes
-                    for tamanho in root.iter('fileSize'):
-                        lista_tamanho.append(tamanho.attrib) # cria uma lista com todos os tamanhos
+                    controller.searchMetadados(palavrachave, opcao) #METODO TA EM CONTROLLER
 
+                if child.tag == ("searchFilesResponse"): #MOSTRAR AO USUARIO ESSE ARQUIVO
+                    arquivo = open ('/lista_nome_tam_pesquisa.txt','w')
+                    lista = []
+                    for files in root.iter('file'):
+                        nome = files.find('fileName').text
+                        tamanho = files.find('fileSize').text
+                        lista.append(nome + '-' + port + '\n') # cria uma lista com todos os nomes
+                    arquivo.writelines(lista)
+                    arquivo.close()
 
                 if child.tag == ("getFiles"):
                     palavrachave = root.iter('fileName')
-                    return getFilesResponse(palavrachave)
+                    self.getFilesResponse(palavrachave)
 
                 if child.tag == ("getFilesResponse"):
                     data = root.iter('data')
-
                     decode_data = decode64(data)
                     nome_arquivo = root.iter('fileName')
                     arquivo_recebido = open(nome_arquivo, 'w')
