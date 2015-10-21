@@ -58,7 +58,7 @@ class Cliente:
 
                     xml_getFiles.write('getFiles.xml')
 
-                    self.enviar_arquivo("getFiles.xml")
+                    self.enviar_arquivo(s,"getFiles.xml")
                     #texto=escolha+","+nome
 
                     #s.send(texto)
@@ -105,26 +105,6 @@ class Cliente:
 
                 return  arquivos
 # paradinhaaas
-
-
-
-
-        def getFilesResponse(fileName,filedata): #devolve o arquivo
-            root = ET.Element('p2pse')
-            getFilesResponse = ET.SubElement(root,'getFilesResponse')
-            fileData2 = ET.SubElement(getFilesResponse,'fileData')
-            fileName2 = ET.SubElement(fileData2,'fileName')
-            data2 = ET.Element(fileData2,'data')
-
-            fileName2.text = fileName
-            data2.text = encode64(fileName)
-
-            xml_getFilesresponse = ET.ElementTree(root)
-            ET.dump(root)
-
-            xml_getFilesresponse.write('getfilesResponse.xml')
-
-
 
 
 
@@ -309,13 +289,32 @@ class Cliente:
 
                 if child.tag == ("getFiles"):
                     palavrachave = root.iter('fileName')
-                    return getFilesResponse(palavrachave)
+                    self.getFilesResponse(palavrachave)
 
                 if child.tag == ("getFilesResponse"):
                     data = root.iter('data')
+                    #decode_data = decode64(data)
 
-                    decode_data = decode64(data)
                     nome_arquivo = root.iter('fileName')
                     arquivo_recebido = open(nome_arquivo, 'w')
                     arquivo_recebido.write(decode_data)
                     arquivo_recebido.close()
+
+
+
+
+
+        def getFilesResponse(self,fileName): #devolve o arquivo
+            root = ET.Element('p2pse')
+            getFilesResponse = ET.SubElement(root,'getFilesResponse')
+            fileData2 = ET.SubElement(getFilesResponse,'fileData')
+            fileName2 = ET.SubElement(fileData2,'fileName')
+            data2 = ET.Element(fileData2,'data')
+                
+            fileName2.text = fileName
+            data2.text = encode64(fileName)
+
+            xml_getFilesresponse = ET.ElementTree(root)
+            ET.dump(root)
+
+            xml_getFilesresponse.write('getfilesResponse.xml')

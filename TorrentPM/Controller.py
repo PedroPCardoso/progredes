@@ -51,10 +51,8 @@ class Controller():
 
         if "3" == escolha:
 
-            opcao = raw_input("Digite Nome do arquivo seguido do seu formato : ")
+            keywords= raw_input("Digite Nome do arquivo seguido do seu formato : ")
 
-            #     print "formato deve ser digitado dessa forma: *.mp3"
-            keywords = raw_input()
             #self.searchMetywords,opcao)
             self.cliente(escolha,keywords)
             #t = threading.Thread(target=self.cliente, args=(keywords))
