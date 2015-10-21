@@ -1,16 +1,49 @@
-<p2pse><getHostsResponse>
-  <host>
-    <ip>127.0.0.1</ip>
-    <port>55264</port>
-    </host>
-    <host>
-    <ip>127.0.0.1</ip>
-    <port>55272</port>
-    </host>
-    <host>
-    <ip>127.0.0.1</ip>
-    <port>55283</port>
-    </host>
-    <host>
-    <ip>127.0.0.1</ip>
-    <port>55311</port></host></getHostsResponse></p2pse>
+<p2pse><getHostsResponse><host><ip>127.0.0.1</ip><port>55264
+</port><ip>127.0.0.1</ip><port>55272
+</port><ip>127.0.0.1</ip><port>55283
+</port><ip>127.0.0.1</ip><port>55311
+</port><ip>127.0.0.1</ip><port>55317
+</port><ip>127.0.0.1</ip><port>55328
+</port><ip>127.0.0.1</ip><port>39308
+</port><ip>127.0.0.1</ip><port>39391
+</port><ip>127.0.0.1</ip><port>39399
+</port><ip>127.0.0.1</ip><port>40265
+</port><ip>127.0.0.1</ip><port>40438
+</port><ip>127.0.0.1</ip><port>40588
+</port><ip>127.0.0.1</ip><port>40592
+</port><ip>127.0.0.1</ip><port>40755
+</port><ip>127.0.0.1</ip><port>41188
+</port><ip>127.0.0.1</ip><port>41295
+</port><ip>127.0.0.1</ip><port>41297
+</port><ip>127.0.0.1</ip><port>41353
+</port><ip>127.0.0.1</ip><port>41370
+</port><ip>127.0.0.1</ip><port>41587
+</port><ip>127.0.0.1</ip><port>41591
+</port><ip>127.0.0.1</ip><port>41593
+</port><ip>127.0.0.1</ip><port>42410
+</port><ip>127.0.0.1</ip><port>46148
+</port><ip>127.0.0.1</ip><port>46156
+</port><ip>127.0.0.1</ip><port>46270
+</port><ip>127.0.0.1</ip><port>46287
+</port><ip>127.0.0.1</ip><port>46483
+</port><ip>127.0.0.1</ip><port>48729
+</port><ip>127.0.0.1</ip><port>49093
+</port><ip>127.0.0.1</ip><port>49097
+</port><ip>127.0.0.1</ip><port>49173
+</port><ip>127.0.0.1</ip><port>51366
+</port><ip>127.0.0.1</ip><port>51405
+</port><ip>127.0.0.1</ip><port>51407
+</port><ip>127.0.0.1</ip><port>51451
+</port><ip>127.0.0.1</ip><port>57357
+</port><ip>127.0.0.1</ip><port>45800
+</port><ip>127.0.0.1</ip><port>45801
+</port><ip>127.0.0.1</ip><port>45803
+</port><ip>127.0.0.1</ip><port>45808
+</port><ip>127.0.0.1</ip><port>46006
+</port><ip>127.0.0.1</ip><port>46007
+</port><ip>127.0.0.1</ip><port>46008
+</port><ip>127.0.0.1</ip><port>46016
+</port><ip>127.0.0.1</ip><port>46108
+</port><ip>127.0.0.1</ip><port>46146
+</port><ip>127.0.0.1</ip><port>46148
+</port></host></getHostsResponse></p2pse>
