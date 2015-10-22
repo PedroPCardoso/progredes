@@ -1,0 +1,25 @@
+BASE DA APRESENTAÇÃO
+
+João quer uma apresentação em slides mesmo, do projeto.
+Focando principalmente nos problemas e nas resoluções,
+pensei em colocar umas telas de erro não muita coisa.
+E fala o que fizemos de forma resumida, as funções que utiliamos e tal,
+coisas interessantes ou não.
+
+- XML
+>como cria o xml
+>o problema do ET.dump que é um objeto e mostrava none no print
+>dtd
+>leitura nos xmls
+>funções auxiliares
+>problema do attribut que eu tava fazendo errado
+>uso do arquivo
+
+- CONEXÃO
+>
+
+- THREAD
+>
+
+- DJANGO
+>
