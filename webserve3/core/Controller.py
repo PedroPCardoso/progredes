@@ -3,7 +3,7 @@
 import threading
 
 __author__ = 'Pedro Cardoso e Manuelle Macedo'
-from Servidor import Servidor
+from . import Servidor
 from Cliente import Cliente
 import xml.etree.ElementTree as ET #sql = ET
 import os
@@ -22,8 +22,8 @@ class Controller():
         print "Menu\n"
         print "[1] Listar hosts locais "
         print "[2] Listar hosts remotos"
-        print "[3] Procurar arquivos remotos"
-        print "[4] Procurar arquivos local" 
+        print "[3] Procurar arquivos localmente"
+        print "[4] Procurar arquivos remotos"
 
         def inicializar(local,porta):
             print "servidor inicializado"
@@ -39,7 +39,7 @@ class Controller():
             #c = Cliente()
             #for e in s.lista_clientes:
             #c.enviar(nome)
-            #  listHosts()  #lê o arquivo local de ip e portas e mostra
+          #  listHosts()  #lê o arquivo local de ip e portas e mostra
         if "2" == escolha:
              pedido="2"
              #XMLENVIADO=getHosts() #tem que enviar esse xml pro outro pc e receber o xml de resposta
@@ -51,8 +51,10 @@ class Controller():
 
         if "3" == escolha:
 
-            opcao = raw_input("Digite Nome do arquivo seguido do seu formato : ")
-
+            opcao = raw_input("Deseja procurar por: (1) Nome do arquivo seguido do seu formato")
+            if opcao == "1":
+                print "Digite o nome do arquivo junto com o formato do arquivo:"
+            # if opcao == "gite o formato do arquivo:"
             #     print "formato deve ser digitado dessa forma: *.mp3"
             keywords = raw_input()
             #self.searchMetywords,opcao)
@@ -88,6 +90,54 @@ class Controller():
                 print (i)
         arquivo_ips.close()
 
+
+
+    def string_xml(reading_allXml, opcao): #chega a string xml pra ler e saber o que e
+        tree = ET.parse(reading_allXml)
+        root = tree.getroot() # recupera a tag principal
+
+        for child in root: # procura os subelements
+            if child.tag == ("getHosts"):
+                return getHostsResponse() #retorna o xml com a lista de ips e portas ///  transmitir/enviar
+
+            if child.tag == ("getHostsResponse"):
+                lista_ips = []
+                lista_ports = []
+                for ips  in root.iter('ip'):
+                    lista_ips.append(ips.attrib) # cria uma lista com todos os ips
+                for port in root.iter('port'):
+                    lista_ports.append(port.attrib) # cria uma lista com todas as portas
+
+                tamanho = lista_ips.lenght
+                print "LISTA DE IPS E PORTAS"
+                for i in range(0,(tamanho-1)):
+                    print ('IP:', lista_ips[i])
+                    print ('PORTA:', lista_ports[i])
+
+            if child.tag == ("searchFiles"):
+                palavrachave = root.iter('keywords')
+                return searchMetadados(palavrachave, opcao) #numero da opção se for rocurar pelo nome ou pelo tamanho /// retorna o xml de searchresponde
+
+            if child.tag == ("searchFilesResponse"):
+                lista_nome = []
+                lista_tamanho = []
+                for nome  in root.iter('fileName'):
+                    lista_nome.append(nome.attrib) # cria uma lista com todos os nomes
+                for tamanho in root.iter('fileSize'):
+                    lista_tamanho.append(tamanho.attrib) # cria uma lista com todos os tamanhos
+
+
+            if child.tag == ("getFiles"):
+                palavrachave = root.iter('fileName')
+                return getFilesResponse(palavrachave)
+
+            if child.tag == ("getFilesResponse"):
+                data = root.iter('data')
+                decode_data = decode64(data)
+                nome_arquivo = root.iter('fileName')
+                arquivo_recebido = open(nome_arquivo, 'w')
+                arquivo_recebido.write(decode_data)
+                arquivo_recebido.close()
 
 Controller()
 
@@ -159,6 +209,103 @@ def decode64(data):
     return base64.standard_b64decode(data)
 
 
+#----------------------------------------------------------------------------XML--------------------------------------------------------------------
+#OK
+def getHosts(): #pede lista de hosts
+    root = ET.Element('p2pse')
+    gethosts = ET.SubElement(root,'getHosts')
+
+    xml_gethosts = ET.ElementTree(root)
+    ET.dump(root)
+
+    xml_gethosts.write('getHosts.xml')
+
+    #return xml_gethosts #tem problema aqui, quando do print aqui aparece none
+
+#OK
+def getHostsResponse(): #responde com a lista dos hosts
+    root = ET.Element('p2pse')
+    gethostsresponse = ET.SubElement(root,'getHostsResponse')
+    host = ET.SubElement(gethostsresponse,'host')
+
+    arquivo_ips = open('lista_ips.txt', 'r')
+    lista_ips = arquivo_ips.readlines()
+    for i in lista_ips:
+            ip = ET.SubElement(host,'ip')
+            port = ET.SubElement(host,'port')
+            i_t = i.split(',')
+            ip.text = i_t[0]
+            port.text = i_t[1]
+    arquivo_ips.close()
+
+    xml_gethostsresponse = ET.ElementTree(root)
+    ET.dump(root)
+
+    xml_gethostsresponse.write('getHostsResponse.xml')
+    #return xml_gethostsresponse
+
+#OK
+def searchFiles(keywords): #manda procurar o arquivo de acordo com as palavras chaves, precisa de leitura pra saber quais as palavras
+    root = ET.Element('p2pse')
+    searchfiles = ET.SubElement(root,'searchFiles')
+    keywords2 = ET.SubElement(root,'keywords')
+
+    keywords2.text = keywords
+
+    xml_searchFiles = ET.ElementTree(root)
+    ET.dump(root)
+
+
+    xml_searchFiles.write('searchFiles.xml')
+    #return xml_searchFiles
+
+#pra testar isso aqui preciso testar searchMetadados :O
+def searchFilesResponse(nome_arq, tam_arq): #devolve os dados do arquivo que foi pedido
+    root = ET.Element('p2pse')
+    searchfileresponse = ET.SubElement(root,'searchFilesResponse')
+    file2 = ET.SubElement(searchfileresponse,'file')
+
+    for i in nome_arq: # percorre as linhas da matriz (nome)
+        fileName2 = ET.SubElement(file2,'fileName')
+        fileName2.text = i
+        for j in tam_arq: #percorre as colunas (tamanho)
+            fileSize2 = ET.SubElement(file2,'fileSize')
+            fileSize2.text = j
+            break
+
+    xml_searchFilesResponse = ET.ElementTree(root)
+    ET.dump(root)
+
+    xml_searchFilesResponse.write('searchFilesResponse.xml')
+    #return  xml_searchFilesResponse
+
+def getFiles(fileName): #dá o nome do arquivo pra receber o mesmo
+    root = ET.Element('p2pse')
+    getFiles = ET.SubElement(root,'getFiles')
+    fileName2 = ET.SubElement(getFiles, 'fileName')
+
+    fileName2.text = fileName
+
+    xml_getFiles = ET.ElementTree(root)
+    ET.dump(root)
+
+    xml_getFiles.write('getFiles.xml')
+    #return  xml_getFiles
+
+def getFilesResponse(fileName): #devolve o arquivo
+    root = ET.Element('p2pse')
+    getFilesResponse = ET.SubElement(root,'getFilesResponse')
+    fileData2 = ET.SubElement(getFilesResponse,'fileData')
+    fileName2 = ET.SubElement(fileData2,'fileName')
+    data2 = ET.Element(fileData2,'data')
+
+    fileName2.text = fileName
+    data2.text = encode64(fileName)
+
+    xml_getFilesresponse = ET.ElementTree(root)
+    ET.dump(root)
+
+    xml_getFilesresponse.write('getfilesResponse.xml')
 
     #return  xml_getFiles
 '''
@@ -179,7 +326,7 @@ def validate_xml(xml_filename, dtd_filename):
         '''
 """
 
-def validate_xml(xml_filename, dtd_filename):
+    def validate_xml(xml_filename, dtd_filename):
 Validate a given XML file with a given external DTD.
        If the XML file is not valid, an exception will be
          printed with an error message.
@@ -190,7 +337,7 @@ Validate a given XML file with a given external DTD.
         parser.ent = dtd
         parser.parse_resource(xml_filename)
 
-if __name__ == "__main__":
+    if __name__ == "__main__":
         xml_filename, dtd_filename = sys.argv[1], sys.argv[2]
         validate_xml(xml_filename, dtd_filename)
 """

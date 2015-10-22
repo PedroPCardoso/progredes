@@ -1,11 +1,10 @@
 from django.shortcuts import render_to_response
 from django.shortcuts import render
-from . import Controller
+#from . import Controller
 
-controller = Controller()
+#controller = Controller()
 
 def home(request):
-    controller.listHosts()
     return render_to_response('core/index.html', {})
 
 def local(request):
