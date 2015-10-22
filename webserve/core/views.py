@@ -1,17 +1,23 @@
 from django.shortcuts import render_to_response
 from django.shortcuts import render
-from . import Controller
+from Controller import Controller
 
 controller = Controller()
 
 def home(request):
-    controller.listHosts()
+
     return render_to_response('core/index.html', {})
 
 def local(request):
-    context = {'texto': 'Hosts locais', 'hosts':'10.0.0.1'}
+
+    text=controller.meushosts()
+    print text
+    context = {'texto': 'Hosts locais', 'hosts':text }
     return render(request, 'core/local.html', context)
 
 def remoto(request):
-    context = {'texto': 'Hosts Remoto', 'hosts':'10.0.0.1'}
+
+    texto = controller.querohosts()
+
+    context = {'texto': 'Hosts Remoto', 'hosts':texto }
     return render(request, 'core/remoto.html', context)

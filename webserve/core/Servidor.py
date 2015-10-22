@@ -40,16 +40,14 @@ class Servidor:
                         c.string_xml("pergunta.xml",1)
                         arq = open('pergunta.xml','r')
 
-                        for i in arq.readline():
-                            if i=="<p2pse><getHosts /></p2pse>":
-                                c.enviar_arquivo(conn,"getHostsResponse.xml") # fazer a condição ainda, to mudando manualmente, se for get hosts é só mudar o nome do arquivo que deve ser enviado de volta
-                                conn.close()
-                                break
+                        c.enviar_arquivo(conn,"getHostsResponse.xml") # fazer a condição ainda, to mudando manualmente, se for get hosts é só mudar o nome do arquivo que deve ser enviado de volta
+                        conn.close()
+                        break
 
-                            if i.endswith("</fileName></getFiles></p2pse>")==1:
-                                c.enviar_arquivo(conn,"getfilesResponse.xml") # fazer a condição ainda, to mudando manualmente, se for get hosts é só mudar o nome do arquivo que deve ser enviado de volta
-                                conn.close()
-                                break
+                        if i.endswith("</fileName></getFiles></p2pse>")==1:
+                            c.enviar_arquivo(conn,"getfilesResponse.xml") # fazer a condição ainda, to mudando manualmente, se for get hosts é só mudar o nome do arquivo que deve ser enviado de volta
+                            conn.close()
+                            break
 
                         """
                         if da[1] == '3':

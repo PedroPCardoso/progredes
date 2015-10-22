@@ -33,23 +33,24 @@ class Controller():
         th=Thread( target=inicializar, args = ( "localhost",57001, ) )
         th.start()
 
-        escolha=raw_input()
-        if "1" == escolha:
-            self.listHosts()
+
+
+    def meushosts(self):
+            return self.listHosts()
             #c = Cliente()
             #for e in s.lista_clientes:
             #c.enviar(nome)
             #  listHosts()  #lê o arquivo local de ip e portas e mostra
-        if "2" == escolha:
+    def querohosts(self):
+             escolha="2"
              pedido="2"
              #XMLENVIADO=getHosts() #tem que enviar esse xml pro outro pc e receber o xml de resposta
              self.cliente(escolha,pedido)
              print "lista recebida com sucesso"
+             return "ola"
              # string_xml(XMLRECEBIDO,3)
-
-
-
-        if "3" == escolha:
+    def queroarquivo(self):
+            escolha="3"
 
             opcao = raw_input("Digite Nome do arquivo seguido do seu formato : ")
 
@@ -59,8 +60,9 @@ class Controller():
             self.cliente(escolha,keywords)
             #t = threading.Thread(target=self.cliente, args=(keywords))
             #t.start()
+    def meusarquivos(self):
 
-        if "4" == escolha:
+            escolha= "4"
             opcao = raw_input("Deseja procurar por: (1) Nome do arquivo ou (2) Formato do arquivo")
             if opcao == "1":
                 print "Digite o nome do arquivo:"
@@ -73,6 +75,8 @@ class Controller():
             fileName = raw_input ("Digite o nome do arquivo se deseja obtê-lo")
             getFiles(fileName) #gera xml pra ser enviada caso ele queira o arquivo
             string_xml(XMLRECEBIDO,opcao) #xml que ele recebe do outro host
+
+
     def servidor(self):
         s= Servidor("locaohost",50001)
 
@@ -83,12 +87,14 @@ class Controller():
         return c.enviar(escolha,nome)
     def listHosts(self):
         arquivo_ips = open('lista_ips.txt', 'r')
+        str=""
         for i in arquivo_ips.readlines():
-                print (i)
+                str+=i + ";"
+                print str
         arquivo_ips.close()
+        return str
 
 
-Controller()
 
 
 #------------------------------------------------------------------------FUNCOES AUXILIARES---------------------------------------------------------------
