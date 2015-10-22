@@ -25,13 +25,15 @@ class Controller():
         print "[3] Procurar arquivos remotos"
         print "[4] Procurar arquivos local"
 
+
         def inicializar(local,porta):
             print "servidor inicializado"
             s=Servidor(local,porta)
 
 
-        th=Thread( target=inicializar, args = ( "localhost",57001, ) )
+        th=Thread( target=inicializar, args = ( "localhost",8001, ) )
         th.start()
+
 
 
 
@@ -47,7 +49,9 @@ class Controller():
              #XMLENVIADO=getHosts() #tem que enviar esse xml pro outro pc e receber o xml de resposta
              self.cliente(escolha,pedido)
              print "lista recebida com sucesso"
-             return "ola"
+             #cliente = Cliente()
+            # cliente.string_xml("Hosts.xml",2)
+             return "Hosts Recebidos com Sucesso "
              # string_xml(XMLRECEBIDO,3)
     def queroarquivo(self):
             escolha="3"
@@ -75,10 +79,6 @@ class Controller():
             fileName = raw_input ("Digite o nome do arquivo se deseja obtê-lo")
             getFiles(fileName) #gera xml pra ser enviada caso ele queira o arquivo
             string_xml(XMLRECEBIDO,opcao) #xml que ele recebe do outro host
-
-
-    def servidor(self):
-        s= Servidor("locaohost",50001)
 
 
 

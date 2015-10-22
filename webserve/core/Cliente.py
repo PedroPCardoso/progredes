@@ -18,7 +18,7 @@ class Cliente:
  #envia um pedido para outro servidor, e esperando a resposta do mesmo
         def enviar(self, escolha,nome):
                 HOST='localhost' #coloca o host do servidor
-                PORT=57001
+                PORT=8001
                 s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
                 print "conectando com servidor..."
                 s.connect((HOST,PORT))
@@ -38,15 +38,14 @@ class Cliente:
                     arq = open('Hosts.xml','a')
 
                     while True:
-                        d=s.recv(1024)
+                            d=s.recv(1024)
 
-                        for i in d:
-                            arq.write(i)
+                            for i in d:
+                                arq.write(i)
 
-                        if "</port></host></getHostsResponse></p2pse>"==d:
-
-                            arq.close()
-                            break
+                            if d.endswith("</p2pse>")==1:
+                                arq.close()
+                                break
 
 
                 if escolha=="3":
@@ -76,9 +75,10 @@ class Cliente:
                             arq.write(i)
 
                         if d.endswith("</p2pse>")==1:
-                            break
                             arq.close()
-                    self.string_xml("file.xml",2)
+                            break
+
+                #    self.string_xml("file.xml",2)
                     s.close()
 
         def getHosts(): #pede lista de hosts
@@ -255,7 +255,7 @@ class Cliente:
                     self.getHostsResponse() #retorna o xml com a lista de ips e portas ///  transmitir/enviar
 
                 if child.tag == ("getHostsResponse"): #adiciona no arquivo os ips e portas recebidos
-                    arquivo = open('/lista_ips_ports.txt','a') #ler o txt antes e jogar no sets
+                    arquivo = open('lista_ips_ports.txt','a') #ler o txt antes e jogar no sets
                     lista = []
                     for hosts in root.iter('host'):
                         ip = hosts.find('ip').text
