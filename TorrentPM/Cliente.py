@@ -34,16 +34,19 @@ class Cliente:
                     self.enviar_arquivo(s,"getHosts.xml")
                     #s.send(texto)
                     print "Aceitando a conexao..."
+                    print "recebendo hostis"
+                    arq = open('Hosts.xml','a')
+
                     while True:
                         d=s.recv(1024)
 
-                        break;
+                        for i in d:
+                            arq.write(i)
 
-                    print "recebendo hostis"
-                    arq = open('Hostis.xml','wb')
-                    for i in d:
-                        arq.write(i)
-                    arq.close()
+                        if "</port></host></getHostsResponse></p2pse>"==d:
+                            break
+                            arq.close()
+
 
                 if escolha=="3":
 
@@ -63,19 +66,19 @@ class Cliente:
 
                     #s.send(texto)
                     print "Aceitando a conexao..."
+                    arq = open('file.xml','a')
+
                     while True:
                         d=s.recv(1024)
 
-                        break;
+                        for i in d:
+                            arq.write(i)
 
-                    print "recebendo hostis"
-                    arq = open('Hostis.jpg','wb')
-
-                    for i in d:
-                        arq.write(self.decode64(i))
-                    arq.close()
-
-
+                        if d.endswith("</p2pse>")==1:
+                            break
+                            arq.close()
+                    self.string_xml("file.xml",2)
+                    s.close()
 
         def getHosts(): #pede lista de hosts
             root = ET.Element('p2pse')
@@ -154,19 +157,16 @@ class Cliente:
                 return searchFilesResponse(nome_arq, tam_arq)
 
 
-        def encode64(fileName):
-            lista_aux = []
-            list_arqs = os.listdir('/')
-            for i in list_arqs:
-                    if fileName == i:
-                        arq = open(i,'r+b')
-                        for j in arq.readlines():
-                            data=+base64.standard_b64encode(j)
-                        arq.close()
-                        return data
+        def encode64(self,fileName):
+                    print fileName
+                    print "TAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                    arc = open(fileName,"r+")
+                    data=+base64.standard_b64encode(arq)
+                    arq.close()
+                    return data
 
         def decode64(data):
-            return base64.standard_b64decode(data)
+            return base64.b64decode(data)
 
 
         #----------------------------------------------------------------------------XML--------------------------------------------------------------------
@@ -246,7 +246,7 @@ class Cliente:
             #return  xml_getFiles
 
         def string_xml(self,reading_allXml, opcao): #chega a string xml pra ler e saber o que e
-            tree = ET.parse(reading_allXml + ".xml")
+            tree = ET.parse(reading_allXml )
             root = tree.getroot() # recupera a tag principal
 
             for child in root: # procura os subelements
@@ -283,7 +283,7 @@ class Cliente:
 
                 if child.tag == ("getFilesResponse"):
                     data = root.iter('data')
-                    #decode_data = decode64(data)
+                    decode_data = self.decode64(data)
 
                     nome_arquivo = root.iter('fileName')
                     arquivo_recebido = open(nome_arquivo, 'w')
@@ -295,14 +295,41 @@ class Cliente:
 
 
         def getFilesResponse(self,fileName): #devolve o arquivo
+
+            arquivo_r = open('peppa_pig.png', 'r')
+            arquivo_w = open('dados_base64.txt', 'w')
+
+            dados=arquivo_r.readlines()
+            lenarray_dados=len(dados)
+            if lenarray_dados>0:
+                    for index in range(lenarray_dados):
+                            info=base64.b64encode(dados[index])
+                            arquivo_w.write(info+'/n')
+            arquivo_r.close
+            arquivo_w.close
+
+
+
+
+
+####################################################################
+
             root = ET.Element('p2pse')
             getFilesResponse = ET.SubElement(root,'getFilesResponse')
             fileData2 = ET.SubElement(getFilesResponse,'fileData')
             fileName2 = ET.SubElement(fileData2,'fileName')
-            data2 = ET.Element(fileData2,'data')
+            data2 = ET.SubElement(fileData2,'data')
 
-            fileName2.text = fileName
-            data2.text = encode64(fileName)
+            fileName2.text = "blablablometro.jpg"
+
+
+            arc = open ("dados_base64.txt","r")
+            dado= ""
+            for i in arc.readline():
+                    dado+=i
+
+            data2.text = dado
+        #    data2.text = self.encode64(fileName)
 
             xml_getFilesresponse = ET.ElementTree(root)
             ET.dump(root)

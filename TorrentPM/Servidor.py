@@ -40,7 +40,7 @@ class Servidor:
 
                         c.string_xml("pergunta.xml",1)
 
-                        c.enviar_arquivo(conn,"getFileResponse.xml") # fazer a condição ainda, to mudando manualmente, se for get hosts é só mudar o nome do arquivo que deve ser enviado de volta
+                        c.enviar_arquivo(conn,"getfilesResponse.xml") # fazer a condição ainda, to mudando manualmente, se for get hosts é só mudar o nome do arquivo que deve ser enviado de volta
                         conn.close()
                         break
                         """
