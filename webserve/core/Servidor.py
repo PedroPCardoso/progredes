@@ -3,8 +3,9 @@
 
 import socket
 
-from core.Cliente import Cliente
-
+import base64
+from Cliente import Cliente
+import threading
 
 class Servidor:
 
@@ -28,10 +29,30 @@ class Servidor:
                         d=conn.recv(1024)
                         print(d)
                         da=d.split(",")
-                        print da
+                        #print da
                         print "ta no servidor"
                         #dados=base64.standard_b64decode(d)
-                        if da[0] == '3':
+                        arq = open('pergunta.xml','wb')
+                        for i in da[0]:
+                            arq.write(i)
+                        arq.close()
+
+                        c.string_xml("pergunta.xml",1)
+                        arq = open('pergunta.xml','r')
+
+                        for i in arq.readline():
+                            if i=="<p2pse><getHosts /></p2pse>":
+                                c.enviar_arquivo(conn,"getHostsResponse.xml") # fazer a condição ainda, to mudando manualmente, se for get hosts é só mudar o nome do arquivo que deve ser enviado de volta
+                                conn.close()
+                                break
+
+                            if i.endswith("</fileName></getFiles></p2pse>")==1:
+                                c.enviar_arquivo(conn,"getfilesResponse.xml") # fazer a condição ainda, to mudando manualmente, se for get hosts é só mudar o nome do arquivo que deve ser enviado de volta
+                                conn.close()
+                                break
+
+                        """
+                        if da[1] == '3':
                                         if self.arquivo(da[1],c):
                                                  print "enviando o arquivo"
                                                  c.enviar_arquivo(conn,da[1])
@@ -39,18 +60,14 @@ class Servidor:
                                         else:
                                                 conn.send("NE")  #caso o arquivo nao seja encontrado
                                                 break
-                        if da[0] == '2':
+                        if da[1] == '2':
                              #tentando enviar a lista de jogos aqui, solicitados pelo clieente la na classe cliente
-                                texto=self.solicitaHost()
+                            #    texto=self.solicitaHost()
                                 print texto
                                 print " enviando resposta"
-                                resp = "2"+texto
-                                conn.send(resp)
-                                conn.close()
                                 break
                         elif not d:
-                                break
-
+                            """
                 print "saindo... do serve"
                 conn.close()
 
@@ -65,7 +82,7 @@ class Servidor:
 #nome do arquivo
         def savingHosts(self,ip, port): #quando se conectar a alguem chama essa func
                     arquivo = open('lista_ips.txt','a') #ler o txt antes e jogar no sets
-                    texto=ip + ',' + port
+                    texto=ip + ',' + port + "\n"
                     arquivo.write(texto)
                     arquivo.close()
         def solicitaHost(self):

@@ -23,7 +23,7 @@ class Controller():
         print "[1] Listar hosts locais "
         print "[2] Listar hosts remotos"
         print "[3] Procurar arquivos remotos"
-        print "[4] Procurar arquivos local" 
+        print "[4] Procurar arquivos local"
 
         def inicializar(local,porta):
             print "servidor inicializado"
@@ -83,8 +83,7 @@ class Controller():
         return c.enviar(escolha,nome)
     def listHosts(self):
         arquivo_ips = open('lista_ips.txt', 'r')
-        lista_ips = arquivo_ips.readlines()
-        for i in lista_ips:
+        for i in arquivo_ips.readlines():
                 print (i)
         arquivo_ips.close()
 
